@@ -1,1 +1,9 @@
-<p>player works!</p>
+@if(isVisible()) {
+    <div>
+        <h2>Això es el reproductor</h2>
+        <p>Nom cançó {{ selectedSong().title }}</p>
+        <audio [src]="selectedSong().mp3Url" controls></audio>
+        <button (click)="onClickFavoriteButton()">Marcar favorit</button>
+        <button (click)="onClickCloseButton()">Tancar cançó</button>
+    </div>
+}

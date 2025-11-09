@@ -23,21 +23,15 @@ export class App {
   public get favoriteSongInMusicList(): WritableSignal<boolean> {
     return this._favoriteSongInMusicList;
   }
-
-  // public set selectedSongInPlayer(selectedSongInPlayer : WritableSignal<string>) {
-  //   this._selectedSongInPlayer.set(selectedSongInPlayer());
-
-  //   console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
-  // }
   
   public get selectedSongInPlayer(): WritableSignal<any> {
     return this._selectedSongInPlayer;
   }
 
   public onSelectSongForPlayer(selectedSongInPlayer : WritableSignal<string>) {
-    if (selectedSongInPlayer() !== "") {
+   // if (selectedSongInPlayer() !== "") {
       this._selectedSongInPlayer.set(selectedSongInPlayer());
-    }
+  //  }
     console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
   }
 

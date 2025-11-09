@@ -2,8 +2,10 @@
     <input type="text" [(ngModel)]="_search">
     <div>
         @for (song of filteredSongsArr(); track $index) {
-            <div (class)="retrieveClassNameIfSongSelected(song)">
-                <h3 (click)="onClickSong(song)" >{{ song.title}} | {{ song.artist }}</h3>
+            <div (click)="onClickSong(song)" (class)="retrieveClassNameIfSongSelected(song)">
+                <h3 >{{ song.title}} | {{ song.artist }}</h3>
+            </div>
+            <div>
                 <button (click)="markOrUnmarkSongAsFavorite(song)">Preferit</button>
             </div>
         }

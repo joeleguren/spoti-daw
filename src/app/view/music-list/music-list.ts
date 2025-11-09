@@ -34,7 +34,7 @@ export class MusicList {
       });
     });
 
-    effect(() => { // És llença aquesta funció quan canvia el input signal
+    effect(() => { // És llença aquesta funció quan canvia el getPlayerSongAsFavorite
       if (this.getPlayerSongAsFavorite() !== "") {
 
         // Hem de trobar la cançó al filteredSongsArr i canviar-la
@@ -116,7 +116,7 @@ export class MusicList {
   // S'encarrega de marcar o desmarcar com a preferit guardant al localStorage també
   public markOrUnmarkSongAsFavorite(song: any) {
     song.favorite = !song.favorite;
-    this.sendSongAsFavorite.emit(song.favorite); // Emitim cançó com a preferida o no al App
+    this.sendSongAsFavorite.emit(song.favorite); // Emitim cançó com a preferida o no, al App
     
     // En aquesta part ho persistim al localStorage
     let tempSongs: any[] = this.getSongs(); // Obtenim cançons del localStorage
