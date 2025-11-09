@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
   templateUrl: './music-list.html',
   styleUrl: './music-list.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+ // changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MusicList {
@@ -38,8 +38,8 @@ export class MusicList {
       if (this.getPlayerSongAsFavorite() !== "") {
 
         // Hem de trobar la cançó al filteredSongsArr i canviar-la
-        let referenceSong: any = this.searchAndRetrieveSong(this._filteredSongsArr(), this.getPlayerSongAsFavorite());
-        referenceSong.favorite = this.getPlayerSongAsFavorite().favorite;
+        //let referenceSong: any = this.searchAndRetrieveSong(this._filteredSongsArr(), this.getPlayerSongAsFavorite());
+        //referenceSong.favorite = this.getPlayerSongAsFavorite().favorite;
 
         // Hem de trobar la cançó al localStorage i canviar-la
         let savedSongs = this.getSongs();
