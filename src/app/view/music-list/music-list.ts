@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, input, InputSignal, output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
 import { SONGS } from '../../model/songs';
 import { FormsModule } from '@angular/forms';
 
@@ -13,8 +13,13 @@ import { FormsModule } from '@angular/forms';
 export class MusicList {
   private static readonly SONGS_ARR_NAME: string = "SAVED_SPOTIDAW_SONGS";
 
-  // Emetre dada al pare
-  public regenerate: OutputEmitterRef<any> = output();
+  // Rebre dades del pare (Aquí rebem tota la cançó per més comoditat)
+  public getPlayerSongAsFavorite: InputSignal<any> = input<any>("");
+
+  // Emetre dades al pare 
+  // (Aquí passem el enviar cançó com a preferida en un altre output, perquè sino podriem interrompre la reproducció del Player)
+  public openSong: OutputEmitterRef<any> = output<any>();
+  public sendSongAsFavorite: OutputEmitterRef<boolean> = output<boolean>();
 
   private _filteredSongsArr: Signal<any[]>;
   public _search: WritableSignal<string>;
@@ -23,11 +28,31 @@ export class MusicList {
   constructor() {
     this._search = signal("");
     
-    this._filteredSongsArr = computed(() => { // Això canvia cada cop que canvia el input search
+    this._filteredSongsArr = computed(() => { // Susbcribim llista filtrada al search
       return this.getSongs().filter((song) => {
         return this.matchesSearch(song);
       });
     });
+
+    effect(() => { // És llença aquesta funció quan canvia el input signal
+      if (this.getPlayerSongAsFavorite() !== "") {
+
+        // Hem de trobar la cançó al filteredSongsArr i canviar-la
+        let referenceSong: any = this.searchAndRetrieveSong(this._filteredSongsArr(), this.getPlayerSongAsFavorite());
+        referenceSong.favorite = this.getPlayerSongAsFavorite().favorite;
+
+        // Hem de trobar la cançó al localStorage i canviar-la
+        let savedSongs = this.getSongs();
+        let referenceSong2 = this.searchAndRetrieveSong(savedSongs, this.getPlayerSongAsFavorite());
+        referenceSong2.favorite = this.getPlayerSongAsFavorite().favorite;
+        this.saveSongs(savedSongs);
+      } 
+      
+      else { // Si rebem la cançó provinent del Player buida, llavors deseleccionem
+        this._selectedSong.set("");
+      }
+    })
+    
     this.saveSongs(this._filteredSongsArr()); // Important guardar cançons per poder treballar en viu al localStorage
   
     this._selectedSong = signal("");
@@ -36,7 +61,6 @@ export class MusicList {
   public get filteredSongsArr() : Signal<any[]> {
     return this._filteredSongsArr;
   }
-  
   
   // public get search() : WritableSignal<string> {
   //   return this.search;
@@ -52,9 +76,10 @@ export class MusicList {
 
   // Aquest mètode s'encarrega de retornar les cançons de localStorage, o sino del song.ts
   private getSongs() {
+    console.log("Anem a recuperar cançons...")
     let tempSongs: any[] = this.checkAndRetrieveSavedSongs(); // Recuperar cançons local storage primer
-    if (tempSongs.length == 0) {
-      console.log("Vale, doncs no hi ha cançons, anem a mirar al songs.ts")
+    if (tempSongs.length == 0) { // No hi ha cançons al local storage?
+      console.log("Vale, doncs no hi ha cançons al LS, anem a mirar al songs.ts")
       tempSongs = this.retrieveModelTemplateSongs(); // Recuperar cançons songs.ts
     }
     return tempSongs;
@@ -74,6 +99,7 @@ export class MusicList {
     //   console.log("Hi ha contingut al SONGS.ts");
     //   console.log(SONGS[1]);
     // }
+    console.log("Retorno cançons del TS!")
     return SONGS; // any[] del model
   }
  
@@ -89,14 +115,14 @@ export class MusicList {
 
   // S'encarrega de marcar o desmarcar com a preferit guardant al localStorage també
   public markOrUnmarkSongAsFavorite(song: any) {
+    song.favorite = !song.favorite;
+    this.sendSongAsFavorite.emit(song.favorite); // Emitim cançó com a preferida o no al App
+    
+    // En aquesta part ho persistim al localStorage
     let tempSongs: any[] = this.getSongs(); // Obtenim cançons del localStorage
-
-    song.favorite = !song.favorite; // Invertim selecció del this._filteredSongsArr per a que es vegui en viu a la llista.
-
     let savedSong = this.searchAndRetrieveSong(tempSongs, song); // Obtenim la referència de la llista passada si existeix (hauría d'estar, ja que treballem en viu al localStorage)
-
-    if (savedSong !== "") {
-      savedSong.favorite = !savedSong.favorite; // Aquí modifiquem referència
+    if (savedSong !== "") { // Si hem obtingut cançó?
+      savedSong.favorite = song.favorite; // Aquí modifiquem favorite referència
       this.saveSongs(tempSongs);
     }
   }
@@ -125,22 +151,18 @@ export class MusicList {
 
   // Aquest mètode s'encarregarà de gestionar el click en una cançó tant si ja ha estat apretada com no.
   public onClickSong(song: any) {
-    console.log("Has clicat cançó");
-    // Haurà de comunicar-se amb el Player dient que s'obri el reproductor, si estava obert, tancar-lo. (Es pot fer en una funció auxiliar)
-    // Marcar cançó com a selected amb this._selectedSong si no hi havia cap seleccionada
-  
-    if (this.areSongsEqual(song,this._selectedSong)) {
-      this._selectedSong.set("");
+    if (this.areSongsEqual(song,this._selectedSong())) { // La cançó seleccionada es igual a la anteriorment seleccionada?
+      this._selectedSong.set(""); // Llavors borrem la selecció
+      console.log("Cançó deseleccionada! " + song.title);
     } else {
-      this._selectedSong.set(song);
+      this._selectedSong.set(song); // Seleccionem cançó
+      console.log("Cançó seleccionada! " + this._selectedSong().title);
     }
 
-    // ENCARA FALTA TRACTAR AL APP, AQUI SOL EL EMIT
+    // Emitim la cançó al App per avisar-lo que s'ha modificat la cançó:
+    this.openSong.emit(this._selectedSong);
 
-    // Emitim al App per avisar-lo que s'ha modificat la cançó:
-    this.regenerate.emit(this._selectedSong);
-
-    console.log(this._selectedSong());
+   // console.log("La cançó seleccionada és --> " + this._selectedSong());
   }
 
   public onClickAddSongButton(song: any)  {

@@ -1,5 +1,5 @@
 <main>
-    <app-music-list></app-music-list>
+    <app-music-list [getPlayerSongAsFavorite]="" (sendSongAsFavorite)="markSongAsFavorite($event)" (openSong)="onSelectSongForPlayer($event)"></app-music-list>
     <app-add-form></app-add-form>
     <app-player></app-player>
 </main>
