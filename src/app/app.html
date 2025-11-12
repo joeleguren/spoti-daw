@@ -1,11 +1,18 @@
 <main>
     <app-music-list [getPlayerSongAsFavorite]="selectedSongInPlayer()" 
     [getSongInAddForm]="songInAddForm()"
-    (sendSongAsFavorite)="markSongAsFavorite($event)" 
-    (openSong)="onSelectSongForPlayer($event)"
-    (openAddForm)="onOpenAddForm($event)"></app-music-list>
+    (sendFavoriteToPlayer)="markSongAsFavorite($event)" 
+    (sendSongToPlayer)="onSelectSongForPlayer($event)"
+    (viewMode)="selectViewMode($event)">
+    </app-music-list>
 
-    <app-add-form [openForm]="openFormInAddForm()"
-    (sendSong)="setAddFormSong($event)"></app-add-form>
-    <app-player [selectedSong]="selectedSongInPlayer()" (sendSong)="onSelectSongForPlayer($event)"></app-player>
+    @if(viewMode() == "ADD-FORM") {
+        <app-add-form (sendSong)="setAddFormSong($event)"
+        (viewMode)="selectViewMode($event)"></app-add-form>
+    }
+    @if(viewMode() == "PLAYER") {
+        <app-player [selectedSong]="selectedSongInPlayer()" 
+        (sendSongToMarkAsFavorite)="onSelectSongForPlayer($event)"
+        (viewMode)="selectViewMode($event)"></app-player>
+    }
 </main>

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, input, InputSignal, output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
 import { SONGS } from '../../model/songs';
 import { FormsModule } from '@angular/forms';
+import { App } from '../../app';
 
 @Component({
   selector: 'app-music-list',
@@ -13,16 +14,20 @@ import { FormsModule } from '@angular/forms';
 export class MusicList {
   private static readonly SONGS_ARR_NAME: string = "SAVED_SPOTIDAW_SONGS";
 
-  // Rebre dades del pare (Aquí rebem tota la cançó per més comoditat)
-  public getPlayerSongAsFavorite: InputSignal<any> = input<any>("");
+  // Inici viewmode
+  public viewMode: OutputEmitterRef<string> = output<any>();
+  // Fi viewmode
 
-  public getSongInAddForm: InputSignal<any> = input<any>("");
+  // Rebre dades del pare 
+  public getPlayerSongAsFavorite: InputSignal<any> = input<any>(""); // Cançó marcada com a preferida provinent de player
+  public getSongInAddForm: InputSignal<any> = input<any>(""); // Cançó a afegir
 
+  
   // Emetre dades al pare 
   // (Aquí passem el enviar cançó com a preferida en un altre output, perquè sino podriem interrompre la reproducció del Player)
-  public openSong: OutputEmitterRef<any> = output<any>();
-  public sendSongAsFavorite: OutputEmitterRef<boolean> = output<boolean>();
-  public openAddForm: OutputEmitterRef<boolean> = output<boolean>();
+  public sendSongToPlayer: OutputEmitterRef<any> = output<any>();
+  public sendFavoriteToPlayer: OutputEmitterRef<boolean> = output<boolean>(); // Enviar cançó com a preferida per al player (Així veu el canvi)
+  
 
   // Atributs classe
   private _filteredSongsArr: Signal<any[]>;
@@ -125,7 +130,7 @@ export class MusicList {
   // S'encarrega de marcar o desmarcar com a preferit guardant al localStorage també
   public markOrUnmarkSongAsFavorite(song: any) {
     song.favorite = !song.favorite;
-    this.sendSongAsFavorite.emit(song.favorite); // Emitim cançó com a preferida o no, al App
+    this.sendFavoriteToPlayer.emit(song.favorite); // Emitim cançó com a preferida o no, al App
     
     // En aquesta part ho persistim al localStorage
     let tempSongs: any[] = this.getSongs(); // Obtenim cançons del localStorage
@@ -162,33 +167,30 @@ export class MusicList {
   public onClickSong(song: any) {
     if (this.areSongsEqual(song,this._selectedSong())) { // La cançó seleccionada es igual a la anteriorment seleccionada?
       this._selectedSong.set(""); // Llavors borrem la selecció
+      this.viewMode.emit("NONE");
       console.log("Cançó deseleccionada! " + song.title);
     } else {
       this._selectedSong.set(song); // Seleccionem cançó
+
+      // Emitim la cançó al App per avisar-lo que s'ha modificat la cançó:
+      this.sendSongToPlayer.emit(this._selectedSong);
+      this.viewMode.emit("PLAYER"); // Seleccionem mode player
+      
       console.log("Cançó seleccionada! " + this._selectedSong().title);
     }
-
-    // Emitim la cançó al App per avisar-lo que s'ha modificat la cançó:
-    this.openSong.emit(this._selectedSong);
-
-   // console.log("La cançó seleccionada és --> " + this._selectedSong());
   }
 
   public onClickAddSongButton()  {
     
     // Hem de deseleccionar peça seleccionada i obrir el formulari AddForm
-    this._selectedSong.set("");
-    this.openSong.emit(signal(""));
-    this.openAddForm.emit(true);
-
-    //this._filteredSongsArr().push(song); // No modifiquem referència, sol contingut
-   // this.saveSongs(this._filteredSongsArr());
+    this._selectedSong.set(""); // Deseleccionar peça
+    this.viewMode.emit(App.SHOW_ADDFORM); // Seleccionem mode Add-Form;
   }
 
   public addSong(song: any)  {
 
     if (song === "") {
-       this.openAddForm.emit(false);
+       //this.openAddForm.emit(false);
       // Afegir cançó
       //this._filteredSongsArr().push(song); // No modifiquem referència, sol contingut
       // this.saveSongs(this._filteredSongsArr());

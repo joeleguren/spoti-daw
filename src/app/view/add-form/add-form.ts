@@ -1,5 +1,6 @@
-import { Component, effect, input, InputSignal, output, Output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { App } from '../../app';
 
 @Component({
   selector: 'app-add-form',
@@ -10,12 +11,9 @@ import { FormsModule } from '@angular/forms';
 export class AddForm {
 
   // Dades per enviar al pare
-    // - Enviar dades (també tanca el formulari)
-    public sendSong: OutputEmitterRef<any> = output<any>();
+  public sendSong: OutputEmitterRef<any> = output<any>(); // Enviar cançó al MusicList
 
-  // Dades a rebre
-  public openForm: InputSignal<any> = input<any>("");
-    // - Quan obrir el formulari
+  public viewMode: OutputEmitterRef<string> = output<string>(); // Enviar viewMode
 
   private _title: WritableSignal<string> = signal("");
   private _artist: WritableSignal<string> = signal("");
@@ -24,15 +22,7 @@ export class AddForm {
   private _mp3Url: WritableSignal<string> = signal("");
   private _cover: WritableSignal<string> = signal("");
 
-  private _isVisible: WritableSignal<boolean> = signal(false);
   private _errorMessage: WritableSignal<string> = signal("");
-  private num: number = 0;
-
-  constructor() {
-    effect(()=> {
-      this._isVisible.set(this.openForm());
-    });    
-  }
 
   public get title(): WritableSignal<string> {
     return this._title;
@@ -77,14 +67,6 @@ export class AddForm {
     this._cover.set(value);
   }
 
-  public get isVisible(): WritableSignal<boolean> {
-    return this._isVisible;
-  }
-
-  public set isVisible(isVisible: boolean) {
-    this.isVisible.set(isVisible);
-  }
-
   public get errorMessage(): WritableSignal<string> {
     return this._errorMessage;
   }
@@ -92,7 +74,7 @@ export class AddForm {
   public closeForm() {
    // this.isVisible = false;
     this.removeFields();
-    this.sendSong.emit(this.num++);
+    this.viewMode.emit(App.SHOW_NONE);
   }
 
   public removeFields() {

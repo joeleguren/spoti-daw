@@ -11,6 +11,17 @@ import { AddForm } from './view/add-form/add-form';
 })
 
 export class App {
+
+  // Constants
+  public static readonly SHOW_PLAYER: string = "PLAYER";
+  public static readonly SHOW_ADDFORM: string = "ADD-FORM";
+  public static readonly SHOW_NONE: string = "NONE";
+  // Fi Constants
+
+  // Mode de vista
+  private _viewMode: WritableSignal<string> = signal<string>(App.SHOW_NONE);
+  // Fi mode de vista
+
   private _selectedSongInPlayer: WritableSignal<any> = signal("");
   private _favoriteSongInPlayer: WritableSignal<boolean> = signal(false);
 
@@ -19,6 +30,10 @@ export class App {
   private _openFormInAddForm: WritableSignal<boolean> = signal(false);
 
   private _songInAddForm: WritableSignal<any> = signal<any>("");
+
+  public get viewMode(): WritableSignal<string> {
+    return this._viewMode;
+  }
 
   public set favoriteSongInMusicList(favorite: WritableSignal<boolean>) {
     this._favoriteSongInMusicList.set(favorite());
@@ -31,7 +46,6 @@ export class App {
   public get selectedSongInPlayer(): WritableSignal<any> {
     return this._selectedSongInPlayer;
   }
-
 
   public onSelectSongForPlayer(selectedSongInPlayer : WritableSignal<string>) {
    // if (selectedSongInPlayer() !== "") {
@@ -61,6 +75,10 @@ export class App {
 
   public get songInAddForm(): WritableSignal<any> {
     return this._songInAddForm;
+  }
+
+  public selectViewMode(viewMode: string) {
+    this._viewMode.set(viewMode);
   }
 
 }
