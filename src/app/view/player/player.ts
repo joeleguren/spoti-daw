@@ -1,4 +1,4 @@
-import { Component, computed, input, InputSignal, output, OutputEmitterRef, signal, Signal} from '@angular/core';
+import { Component, input, InputSignal, output, OutputEmitterRef, signal, Signal} from '@angular/core';
 import { App } from '../../app';
 
 @Component({
@@ -9,7 +9,7 @@ import { App } from '../../app';
 })
 
 export class Player {
-  public sendSongToMarkAsFavorite: OutputEmitterRef<any> = output<any>(); // Envia la cançó per marcar-la com a preferit
+  public sendMarkAsFavorite: OutputEmitterRef<any> = output<boolean>(); // Envia la cançó per marcar-la com a preferit
   public viewMode: OutputEmitterRef<string> = output<string>(); // Envia viewMode (només per tancar)
 
   // Dades rebudes
@@ -19,18 +19,11 @@ export class Player {
     this.viewMode.emit(App.SHOW_NONE);  // Tanca el component
   }
 
-  public onClickFavoriteButton() { // Si apreto botó marcar o desmarcar favorit
+  public onClickFavoriteButton() { // Si apreta botó marcar o desmarcar favorit
     this.selectedSong().favorite = !this.selectedSong().favorite;
 
-    // Hem de crear nova referència, sino el effect que tenim a MusicList no s'executarà (es pensarà que no hi ha canvis)
-    this.sendSongToMarkAsFavorite.emit(signal({
-    title: this.selectedSong().title,
-    artist: this.selectedSong().artist,
-    favorite: this.selectedSong().favorite,
-    description: this.selectedSong().description,
-    mp3Url: this.selectedSong().mp3Url,
-    cover: this.selectedSong().cover
-    }));
+    // Emitim actualització favorit
+    this.sendMarkAsFavorite.emit(this.selectedSong().favorite);
   }
 
 }

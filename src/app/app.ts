@@ -42,6 +42,14 @@ export class App {
   public get favoriteSongInMusicList(): WritableSignal<boolean> {
     return this._favoriteSongInMusicList;
   }
+
+  public onFavoriteSongInPlayer(favorite: boolean) {
+    this._favoriteSongInPlayer.set(favorite);
+  }
+
+  public get favoriteSongInPlayer(): WritableSignal<boolean> {
+    return this._favoriteSongInPlayer;
+  }
   
   public get selectedSongInPlayer(): WritableSignal<any> {
     return this._selectedSongInPlayer;
@@ -64,12 +72,19 @@ export class App {
 
   public markSongAsFavorite(favoriteSongInPlayer: boolean) {
     if (this._selectedSongInPlayer() !== "") { // Hi ha cançó seleccionada? 
-      this._selectedSongInPlayer().favorite = this._favoriteSongInPlayer();
+      this._selectedSongInPlayer.set({
+        title: this._selectedSongInPlayer().title,
+        artist: this._selectedSongInPlayer().artist,
+        favorite: favoriteSongInPlayer,
+        description: this._selectedSongInPlayer().description,
+        mp3Url: this._selectedSongInPlayer().mp3Url,
+        cover: this._selectedSongInPlayer().cover
+      });
     }
   }
 
   public setAddFormSong(song: any) {
-    console.log("He entrat al getter per enviar/tancar formulari");
+    console.log("Soc el pare i estic enviant cançó al MusicList");
     this._songInAddForm.set(song);
   }
 

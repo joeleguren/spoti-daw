@@ -1,4 +1,4 @@
-import { Component, output, OutputEmitterRef, signal, WritableSignal } from '@angular/core';
+import { Component, output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { App } from '../../app';
 
@@ -97,6 +97,8 @@ export class AddForm {
         mp3Url: this._mp3Url(),
         cover: this._cover()
       });
+      this.removeFields();
+      //this.sendSong.emit(""); // Per a que quedi buit
     } else {
       this._errorMessage.set("Error, les dades no poden estar buides!")
     }
@@ -106,9 +108,9 @@ export class AddForm {
   }
 
   public allSongDataIsNotEmpty(): boolean {
-    return this._title.length > 0 && this._artist.length > 0 &&
-      this._mp3Url.length > 0 && this._cover.length > 0 &&
-      this._description.length > 0;
+    return this._title().length > 0 && this._artist().length > 0 &&
+      this._mp3Url().length > 0 && this._cover().length > 0 &&
+      this._description().length > 0;
   }
 
 }
