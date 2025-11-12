@@ -1,1 +1,14 @@
-<p>add-form works!</p>
+@if(isVisible()) {
+    <div>
+        <!-- <form action=""> -->
+            <input type="text" placeholder="Títol de la peça" [(ngModel)]="title"/>
+            <input type="text" placeholder="Nom del grup o de l'artista" [(ngModel)]="artist"/>
+            <input type="text" placeholder="Enllaç a la peça" [(ngModel)]="mp3Url"/>
+            <input type="text" placeholder="Imatge del disc" [(ngModel)]="cover"/>
+            <textarea type="text" placeholder="Imatge del disc" [(ngModel)]="description"></textarea>
+            <button (click)="closeForm()">Cancel·lar</button>
+            <button (click)="removeFields()">Esborrar</button>
+            <button (click)="addSong()">Afegir</button>
+        <!-- </form> -->
+    </div>
+}

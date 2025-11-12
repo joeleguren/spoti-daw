@@ -1,8 +1,11 @@
 <main>
     <app-music-list [getPlayerSongAsFavorite]="selectedSongInPlayer()" 
+    [getSongInAddForm]="songInAddForm()"
     (sendSongAsFavorite)="markSongAsFavorite($event)" 
-    (openSong)="onSelectSongForPlayer($event)"></app-music-list>
+    (openSong)="onSelectSongForPlayer($event)"
+    (openAddForm)="onOpenAddForm($event)"></app-music-list>
 
-    <app-add-form></app-add-form>
+    <app-add-form [openForm]="openFormInAddForm()"
+    (sendSong)="setAddFormSong($event)"></app-add-form>
     <app-player [selectedSong]="selectedSongInPlayer()" (sendSong)="onSelectSongForPlayer($event)"></app-player>
 </main>

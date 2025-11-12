@@ -16,6 +16,10 @@ export class App {
 
   private _favoriteSongInMusicList: WritableSignal<boolean> = signal(false);
 
+  private _openFormInAddForm: WritableSignal<boolean> = signal(false);
+
+  private _songInAddForm: WritableSignal<any> = signal<any>("");
+
   public set favoriteSongInMusicList(favorite: WritableSignal<boolean>) {
     this._favoriteSongInMusicList.set(favorite());
   }
@@ -28,6 +32,7 @@ export class App {
     return this._selectedSongInPlayer;
   }
 
+
   public onSelectSongForPlayer(selectedSongInPlayer : WritableSignal<string>) {
    // if (selectedSongInPlayer() !== "") {
       this._selectedSongInPlayer.set(selectedSongInPlayer());
@@ -35,10 +40,27 @@ export class App {
     console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
   }
 
+  public get openFormInAddForm(): WritableSignal<boolean> {
+    return this._openFormInAddForm;
+  }
+
+  public onOpenAddForm(open: boolean) {
+    this._openFormInAddForm.set(open);
+  }
+
   public markSongAsFavorite(favoriteSongInPlayer: boolean) {
     if (this._selectedSongInPlayer() !== "") { // Hi ha cançó seleccionada? 
       this._selectedSongInPlayer().favorite = this._favoriteSongInPlayer();
     }
+  }
+
+  public setAddFormSong(song: any) {
+    console.log("He entrat al getter per enviar/tancar formulari");
+    this._songInAddForm.set(song);
+  }
+
+  public get songInAddForm(): WritableSignal<any> {
+    return this._songInAddForm;
   }
 
 }

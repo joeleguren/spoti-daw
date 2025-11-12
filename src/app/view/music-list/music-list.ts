@@ -16,11 +16,15 @@ export class MusicList {
   // Rebre dades del pare (Aquí rebem tota la cançó per més comoditat)
   public getPlayerSongAsFavorite: InputSignal<any> = input<any>("");
 
+  public getSongInAddForm: InputSignal<any> = input<any>("");
+
   // Emetre dades al pare 
   // (Aquí passem el enviar cançó com a preferida en un altre output, perquè sino podriem interrompre la reproducció del Player)
   public openSong: OutputEmitterRef<any> = output<any>();
   public sendSongAsFavorite: OutputEmitterRef<boolean> = output<boolean>();
+  public openAddForm: OutputEmitterRef<boolean> = output<boolean>();
 
+  // Atributs classe
   private _filteredSongsArr: Signal<any[]>;
   public _search: WritableSignal<string>;
   private _selectedSong: WritableSignal<any>;
@@ -51,11 +55,16 @@ export class MusicList {
       else { // Si rebem la cançó provinent del Player buida, llavors deseleccionem
         this._selectedSong.set("");
       }
-    })
+    });
     
     this.saveSongs(this._filteredSongsArr()); // Important guardar cançons per poder treballar en viu al localStorage
   
     this._selectedSong = signal("");
+
+    effect(() => {
+      console.log("Sóc el App y executo l'effect al notar canvi a la canço form");
+      this.addSong(this.getSongInAddForm());
+    });
   }
 
   public get filteredSongsArr() : Signal<any[]> {
@@ -165,13 +174,27 @@ export class MusicList {
    // console.log("La cançó seleccionada és --> " + this._selectedSong());
   }
 
-  public onClickAddSongButton(song: any)  {
+  public onClickAddSongButton()  {
     
     // Hem de deseleccionar peça seleccionada i obrir el formulari AddForm
     this._selectedSong.set("");
+    this.openSong.emit(signal(""));
+    this.openAddForm.emit(true);
 
     //this._filteredSongsArr().push(song); // No modifiquem referència, sol contingut
    // this.saveSongs(this._filteredSongsArr());
+  }
+
+  public addSong(song: any)  {
+
+    if (song === "") {
+       this.openAddForm.emit(false);
+      // Afegir cançó
+      //this._filteredSongsArr().push(song); // No modifiquem referència, sol contingut
+      // this.saveSongs(this._filteredSongsArr());
+    } else { // Si rebo cançó buida (acció de tancar formulari)
+     
+    }
   }
 
 }
