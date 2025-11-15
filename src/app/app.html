@@ -1,5 +1,5 @@
 <main>
-    <app-music-list [getPlayerSongAsFavorite]="favoriteSongInPlayer()" 
+    <app-music-list [getFavoriteFromPlayer]="favoriteSongInPlayer()" 
     [getSongInAddForm]="songInAddForm()"
     (sendFavoriteToPlayer)="markSongAsFavorite($event)" 
     (sendSongToPlayer)="onSelectSongForPlayer($event)"
@@ -12,7 +12,7 @@
     }
     @if(viewMode() == "PLAYER") {
         <app-player [selectedSong]="selectedSongInPlayer()" 
-        (sendMarkAsFavorite)="onFavoriteSongInPlayer($event)"
+        (sendSongMarkAsFavorite)="onFavoriteSongInPlayer($event)"
         (viewMode)="selectViewMode($event)"></app-player>
     }
 </main>

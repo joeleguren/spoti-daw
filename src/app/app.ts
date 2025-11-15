@@ -22,14 +22,14 @@ export class App {
   private _viewMode: WritableSignal<string> = signal<string>(App.SHOW_NONE);
   // Fi mode de vista
 
-  private _selectedSongInPlayer: WritableSignal<any> = signal("");
-  private _favoriteSongInPlayer: WritableSignal<boolean> = signal(false);
+  private _selectedSongInPlayer: WritableSignal<any> = signal(null); // Cançó que envia musicList i rep player
+  private _favoriteSongInPlayer: WritableSignal<any> = signal(null); // Cançó que envia player i rep musicList
 
   private _favoriteSongInMusicList: WritableSignal<boolean> = signal(false);
 
   private _openFormInAddForm: WritableSignal<boolean> = signal(false);
 
-  private _songInAddForm: WritableSignal<any> = signal<any>("");
+  private _songInAddForm: WritableSignal<any> = signal<any>(null);
 
   public get viewMode(): WritableSignal<string> {
     return this._viewMode;
@@ -43,11 +43,11 @@ export class App {
     return this._favoriteSongInMusicList;
   }
 
-  public onFavoriteSongInPlayer(favorite: boolean) {
-    this._favoriteSongInPlayer.set(favorite);
+  public onFavoriteSongInPlayer(updatedSong: any) {
+    this._favoriteSongInPlayer.set(updatedSong);
   }
 
-  public get favoriteSongInPlayer(): WritableSignal<boolean> {
+  public get favoriteSongInPlayer(): WritableSignal<any> {
     return this._favoriteSongInPlayer;
   }
   
@@ -55,10 +55,10 @@ export class App {
     return this._selectedSongInPlayer;
   }
 
-  public onSelectSongForPlayer(selectedSongInPlayer : WritableSignal<string>) {
-   // if (selectedSongInPlayer() !== "") {
-      this._selectedSongInPlayer.set(selectedSongInPlayer());
-  //  }
+  public onSelectSongForPlayer(selectedSong : any) {
+    if (selectedSong !== null) {
+      this._selectedSongInPlayer.set(selectedSong);
+    }
     console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
   }
 
@@ -71,15 +71,8 @@ export class App {
   }
 
   public markSongAsFavorite(favoriteSongInPlayer: boolean) {
-    if (this._selectedSongInPlayer() !== "") { // Hi ha cançó seleccionada? 
-      this._selectedSongInPlayer.set({
-        title: this._selectedSongInPlayer().title,
-        artist: this._selectedSongInPlayer().artist,
-        favorite: favoriteSongInPlayer,
-        description: this._selectedSongInPlayer().description,
-        mp3Url: this._selectedSongInPlayer().mp3Url,
-        cover: this._selectedSongInPlayer().cover
-      });
+    if (this._selectedSongInPlayer() !== null) { // Hi ha cançó seleccionada? 
+      this._selectedSongInPlayer.set({...this._selectedSongInPlayer(), favorite: favoriteSongInPlayer});
     }
   }
 
