@@ -1,0 +1,28 @@
+html,body {
+    height: 100%;
+    background-color: #1B263B;
+    color: #E0E1DD;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ocupa tota l'alçada de la pantalla */
+}
+
+main {
+    flex-grow: 1;
+}
+
+footer {
+    margin-top: 80px;
+    background-color: #415A77;
+    padding-block: 20px;
+    padding-inline: 10px;
+}
+
+footer p {
+    font-weight: lighter;
+    font-size: 0.9rem;
+    margin: 0;
+}

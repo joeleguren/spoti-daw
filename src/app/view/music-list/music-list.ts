@@ -2,10 +2,15 @@ import { ChangeDetectionStrategy, Component, computed, effect, input, InputSigna
 import { SONGS } from '../../model/songs';
 import { FormsModule } from '@angular/forms';
 import { App } from '../../app';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faHeart as fasHeart} from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHome} from '@fortawesome/free-regular-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-music-list',
-  imports: [FormsModule],
+  imports: [FormsModule, FontAwesomeModule],
   templateUrl: './music-list.html',
   styleUrl: './music-list.css',
   //changeDetection: ChangeDetectionStrategy.OnPush
@@ -13,6 +18,12 @@ import { App } from '../../app';
 
 export class MusicList {
   private static readonly SONGS_ARR_NAME: string = "SAVED_SPOTIDAW_SONGS";
+  // Inici FontAwesome icons
+  public solidHeart = fasHeart;
+  public regularHeart = farHome;
+  public solidPlus = faPlus;
+  public solidMagnifyingGlass = faMagnifyingGlass;
+  // Fi FontAwesome icons
 
   // Inici viewmode
   public viewMode: OutputEmitterRef<string> = output<any>();
@@ -21,7 +32,6 @@ export class MusicList {
   // Rebre dades del pare 
   public getFavoriteFromPlayer: InputSignal<any> = input<any>(null); // Cançó marcada com a preferida provinent de player
   public getSongInAddForm: InputSignal<any> = input<any>(null); // Cançó a afegir
-
   
   // Emetre dades al pare 
   // (Aquí passem el enviar cançó com a preferida en un altre output, perquè sino podriem interrompre la reproducció del Player)
@@ -168,13 +178,20 @@ export class MusicList {
   }
 
   // Funció que carregarà estil pertinent si es la cançó seleccionada --> this._selectedSong
-  public retrieveClassNameIfSongSelected(song1: any) {
+  public retrieveStylesIfSongSelected(song: any) {
     
-    if (this.areSongsEqual(song1, this._selectedSong())) {
-      return "selected-song-div";
+    if (this.areSongsEqual(song, this._selectedSong())) {
+      return "border: 2px solid white;";
     }
+    return "";
+  }
 
-    return "song-div";
+  public retrievePStyleIfSongSelected(song: any) {
+    
+    if (this.areSongsEqual(song, this._selectedSong())) {
+      return "aqua";
+    }
+    return "";
   }
 
   // Aquest mètode s'encarregarà de gestionar el click en una cançó tant si ja ha estat apretada com no.
@@ -220,4 +237,3 @@ export class MusicList {
     }
   }
 }
-

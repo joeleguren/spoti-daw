@@ -1,18 +1,23 @@
-<main>
-    <app-music-list [getFavoriteFromPlayer]="favoriteSongInPlayer()" 
-    [getSongInAddForm]="songInAddForm()"
-    (sendFavoriteToPlayer)="markSongAsFavorite($event)" 
-    (sendSongToPlayer)="onSelectSongForPlayer($event)"
-    (viewMode)="selectViewMode($event)">
-    </app-music-list>
+<div class="app-container d-flex flex-column min-vh-100">
+    <main>
+        <app-music-list [getFavoriteFromPlayer]="favoriteSongInPlayer()" 
+        [getSongInAddForm]="songInAddForm()"
+        (sendFavoriteToPlayer)="markSongAsFavorite($event)" 
+        (sendSongToPlayer)="onSelectSongForPlayer($event)"
+        (viewMode)="selectViewMode($event)">
+        </app-music-list>
 
-    @if(viewMode() == "ADD-FORM") {
-        <app-add-form (sendSong)="setAddFormSong($event)"
-        (viewMode)="selectViewMode($event)"></app-add-form>
-    }
-    @if(viewMode() == "PLAYER") {
-        <app-player [selectedSong]="selectedSongInPlayer()" 
-        (sendSongMarkAsFavorite)="onFavoriteSongInPlayer($event)"
-        (viewMode)="selectViewMode($event)"></app-player>
-    }
-</main>
+        @if(viewMode() == "ADD-FORM") {
+            <app-add-form (sendSong)="setAddFormSong($event)"
+            (viewMode)="selectViewMode($event)"></app-add-form>
+        }
+        @if(viewMode() == "PLAYER") {
+            <app-player [selectedSong]="selectedSongInPlayer()" 
+            (sendSongMarkAsFavorite)="onFavoriteSongInPlayer($event)"
+            (viewMode)="selectViewMode($event)"></app-player>
+        }
+    </main>
+    <footer class="shadow-lg">
+    <p>All rights reserved. Made with <fa-icon [icon]="solidHeart"></fa-icon> by Joel Eguren</p> 
+    </footer>
+</div>

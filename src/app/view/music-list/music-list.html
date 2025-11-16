@@ -1,16 +1,34 @@
-<div>
-    <input type="text" [(ngModel)]="_search">
-    <div>
+<div class="music-list-container">
+    <div class="row mb-4">
+        <div class="col-md-6 flex-container align-items-center">
+            <!-- <fa-icon [icon]="solidMagnifyingGlass"></fa-icon> -->
+            <input type="text" [(ngModel)]="_search" placeholder="Buscar cançó" class="form-control-lg input-search shadow">
+            <button (click)="onClickAddSongButton()" class="btn btn-primary d-flex align-items-center add-form-button shadow">
+                <fa-icon [icon]="solidPlus"></fa-icon>
+            </button>
+        </div>
+        <div class="col-md-6 text-end">
+            <img class="logo" src="img/spotidaw_logo.png" alt="spotidaw_logo">
+        </div>
+    </div>
+    <div class="row">
         @for (song of filteredSongsArr(); track $index) {
-            <div (click)="onClickSong(song)" (class)="retrieveClassNameIfSongSelected(song)">
-                <h3 >{{ song.title}} | {{ song.artist }}</h3>
+            <div class="song-container shadow-lg" [style]="retrieveStylesIfSongSelected(song)">
+                <div (click)="onClickSong(song)" class="col-md-11 song-subcontainer">
+                    <img [src]="song.cover" [alt]="song.title" class="song-img">
+                    <div style="margin-left: 10px;">
+                        <p style="font-weight: bold; font-size: 1.2rem; margin: 0; margin-top: 10px;" [style.color]="retrievePStyleIfSongSelected(song)">{{song.title}}</p>
+                        <p style="font-weight: lighter;">{{song.artist}}</p>
+                    </div>
+                </div>
+                <div class="col-md-1 text-end">
+                    @if (song.favorite) {
+                        <fa-icon [icon]="solidHeart" style="font-size: 1.6rem; margin-right: 25px;" (click)="markOrUnmarkSongAsFavorite(song)" ></fa-icon>
+                    } @else {
+                        <fa-icon [icon]="regularHeart" style="font-size: 1.6rem; margin-right: 25px;" (click)="markOrUnmarkSongAsFavorite(song)"></fa-icon>
+                    }
+                </div>
             </div>
-            <div>
-                <button (click)="markOrUnmarkSongAsFavorite(song)">Preferit</button>
-            </div>
-            {{ song.favorite }}
         }
     </div>
-    <!-- Això hauria de cridar al AddForm -->
-    <button (click)="onClickAddSongButton()">Afegir cançó</button>
 </div>

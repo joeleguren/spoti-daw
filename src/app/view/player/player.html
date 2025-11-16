@@ -1,7 +1,28 @@
-<div>
-    <h2>Això es el reproductor</h2>
-    <p>Nom cançó {{ selectedSong().title }}, favorit --> {{selectedSong().favorite}}</p>
-    <audio [src]="selectedSong().mp3Url" controls></audio>
-    <button (click)="onClickFavoriteButton()">Marcar favorit</button>
-    <button (click)="onClickCloseButton()">Tancar cançó</button>
+<div class="player-container">
+    <div class="d-flex">
+        <img [src]="selectedSong().cover" [alt]="selectedSong().title" class="song-img">
+        <div class="song-container">
+            <p style="font-weight: bold; font-size: 1.2rem; margin: 0; margin-top: 10px;">{{ selectedSong().title }}</p>
+            <p style="font-weight: lighter;">{{ selectedSong().artist }}</p>
+        </div>
+       
+        <div class="icons-container">
+            <fa-icon class="info-icon" [icon]="solidCircleInfo"></fa-icon>
+            <div class="song-info">
+                <p>Descripció</p>
+                <p>{{selectedSong().description}}</p>
+            </div>
+            @if (selectedSong().favorite) {
+                <fa-icon [icon]="solidHeart" (click)="onClickFavoriteButton()" ></fa-icon>
+            } @else {
+                <fa-icon [icon]="regularHeart" (click)="onClickFavoriteButton()"></fa-icon>
+            }
+        </div>
+        <div class="audio-container">
+            <audio [src]="selectedSong().mp3Url" controls></audio>
+        </div>
+    </div>
+    <div>
+        <fa-icon style="font-size: 1.5rem;" [icon]="solidX" (click)="onClickCloseButton()"></fa-icon>
+    </div>
 </div>

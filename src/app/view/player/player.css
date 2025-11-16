@@ -1,0 +1,65 @@
+.player-container {
+    position: fixed;
+    bottom: 15px; 
+    left: 15px;   
+    right: 15px; 
+    height: 100px;
+    background-color: #000000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px; /* padding intern per al contingut */
+    border-radius: 10px; /* cantonades arrodonides */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.song-img {
+    height: 80px;
+    border-radius: 4px;
+}
+
+.song-container {
+    margin-left: 20px;
+}
+
+.icons-container {
+    margin: 10px;
+    margin-top: 5px;
+    margin-left: 20px;
+    margin-right: 100px;
+    font-size: 1.5rem;
+}
+
+.audio-container {
+    margin-top: 10px;
+}
+
+.icons-container {
+    position: relative; 
+}
+
+.song-info {
+    margin-bottom: 15px;
+    position: absolute;
+    bottom: 110%; /* un poco más arriba del icono */
+    left: 50%;
+    transform: translateX(-50%); /* centra horizontalmente respecto al icono */
+    background-color: #0D1B2A; /* mismo color de fondo que la app o player */
+    color: #E0E1DD; /* color de texto */
+    padding: 12px 16px; /* espacio interno amplio */
+    border-radius: 8px; /* bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5); /* sombra para “flotar” */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    width: 220px; /* ancho fijo, se puede ajustar */
+    text-align: left;
+    font-size: 0.9rem;
+    z-index: 100;
+}
+
+.info-icon:hover + .song-info {
+    opacity: 1;
+    pointer-events: auto;
+}

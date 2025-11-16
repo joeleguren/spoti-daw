@@ -1,14 +1,26 @@
 import { Component, input, InputSignal, output, OutputEmitterRef, signal, Signal} from '@angular/core';
 import { App } from '../../app';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faHeart as fasHeart} from '@fortawesome/free-solid-svg-icons';
+import { faHeart as farHome} from '@fortawesome/free-regular-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-player',
-  imports: [],
+  imports: [FontAwesomeModule],
   templateUrl: './player.html',
   styleUrl: './player.css',
 })
 
 export class Player {
+   // Inici FontAwesome icons
+    public solidHeart = fasHeart;
+    public regularHeart = farHome;
+    public solidX = faXmark;
+    public solidCircleInfo = faCircleInfo;
+    // Fi FontAwesome icons
+
   public sendSongMarkAsFavorite: OutputEmitterRef<any> = output<any>(); // Envia la cançó per marcar-la com a preferit
   public viewMode: OutputEmitterRef<string> = output<string>(); // Envia viewMode (només per tancar)
 

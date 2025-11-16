@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+html,body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    background-color: #1B263B;
+    color: #E0E1DD;
+}

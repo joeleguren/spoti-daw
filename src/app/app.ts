@@ -2,15 +2,21 @@ import { Component, signal, WritableSignal } from '@angular/core';
 import { MusicList } from './view/music-list/music-list';
 import { Player } from './view/player/player';
 import { AddForm } from './view/add-form/add-form';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faHeart as fasHeart} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
-  imports: [MusicList, Player, AddForm],
+  imports: [MusicList, Player, AddForm, FontAwesomeModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 
 export class App {
+
+  // Inici FontAwesome icons
+  public solidHeart = fasHeart;
+  // Fi FontAwesome icons
 
   // Constants
   public static readonly SHOW_PLAYER: string = "PLAYER";

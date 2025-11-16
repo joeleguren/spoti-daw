@@ -1,0 +1,54 @@
+.logo {
+    width: 140px;
+}
+
+.music-list-container {
+    align-items: center;
+    margin-top: 40px;
+    margin-inline: 7%;
+}
+
+.add-form-button {
+    height: 44px;
+    width: 45px;
+    margin-left: 30px;
+    background-color: #000000;
+    border: 0;
+}
+
+.input-search {
+    border-radius: 20px;
+    background-color: #0D1B2A;
+    border: none;
+    color: #E0E1DD;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.song-container {
+    display: flex;
+    background-color: #415A77;
+    align-items: center;
+    margin-block: 10px;
+    border-radius: 10px;
+    padding: 15px;
+    border: 2px solid #415A77;
+    transition: background-color 0.2s ease, transform 0.2s ease; 
+    cursor: pointer;
+}
+
+.song-container:hover {
+    background-color: #4d6a8b;
+    border: 2px solid #4d6a8b;
+}
+
+.song-subcontainer {
+    display: flex;
+}
+
+.song-img {
+    height: 80px;
+    border-radius: 4px;
+}
