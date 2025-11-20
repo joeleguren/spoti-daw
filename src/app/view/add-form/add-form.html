@@ -1,13 +1,30 @@
-<div>
-        <!-- <form action=""> -->
-            <input type="text" placeholder="Títol de la peça" [(ngModel)]="title"/>
-            <input type="text" placeholder="Nom del grup o de l'artista" [(ngModel)]="artist"/>
-            <input type="text" placeholder="Enllaç a la peça" [(ngModel)]="mp3Url"/>
-            <input type="text" placeholder="Imatge del disc" [(ngModel)]="cover"/>
-            <textarea type="text" placeholder="Imatge del disc" [(ngModel)]="description"></textarea>
-            <button (click)="closeForm()">Cancel·lar</button>
-            <button (click)="removeFields()">Esborrar</button>
-            <button (click)="addSong()">Afegir</button>
-        <!-- </form> -->
-         <p>{{errorMessage() }}</p>
+<div class="popup-overlay">
+    <div class="popup-form">
+            <div class="text-end mb-0">
+                <fa-icon style="font-size: 1.7rem;" [icon]="solidX" (click)="closeForm()"></fa-icon>
+            </div>
+            <div class="mb-3 mx-2">
+                <input class="form-control mt-1 form-input" type="text" placeholder="Títol de la peça" [(ngModel)]="title"/>
+                <input class="form-control mt-3 form-input" type="text" placeholder="Nom del grup o de l'artista" [(ngModel)]="artist"/>
+                <input class="form-control mt-3 form-input"  type="text" placeholder="Enllaç a la peça" [(ngModel)]="mp3Url"/>
+                <input class="form-control mt-3 form-input"  type="text" placeholder="Imatge del disc" [(ngModel)]="cover"/>
+                <textarea class="form-control mt-3 form-input" type="text" placeholder="Descripció" [(ngModel)]="description"></textarea>
+            
+                @if (errorMessage().length > 0) {
+                    <p class="alert alert-danger p-2 m-3 small"><fa-icon style="font-size: 1rem;" [icon]="solidTriangleExclamation"></fa-icon> {{errorMessage() }}</p>
+                }  
+                <div class="row mt-3 text-center"> 
+                    <div class="col-4">
+                        <button class="btn btn-md" (click)="closeForm()">Cancel·lar</button>
+                    </div>
+                    <div class="col-4">
+                        <button  class="btn btn-md" (click)="removeFields()">Esborrar</button>
+                    </div>
+                    <div class="col-4">
+                        <button  class="btn btn-md"  (click)="addSong()">Afegir</button>
+                    </div>
+                    
+                </div>
+            </div>
+    </div>
 </div>

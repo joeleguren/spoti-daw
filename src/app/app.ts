@@ -65,7 +65,7 @@ export class App {
     if (selectedSong !== null) {
       this._selectedSongInPlayer.set(selectedSong);
     }
-    console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
+   // console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
   }
 
   public get openFormInAddForm(): WritableSignal<boolean> {
@@ -83,7 +83,7 @@ export class App {
   }
 
   public setAddFormSong(song: any) {
-    console.log("Soc el pare i estic enviant cançó al MusicList");
+    //console.log("Soc el pare i estic enviant cançó al MusicList");
     this._songInAddForm.set(song);
   }
 

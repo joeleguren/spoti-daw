@@ -9,7 +9,7 @@
         <div class="icons-container">
             <fa-icon class="info-icon" [icon]="solidCircleInfo"></fa-icon>
             <div class="song-info">
-                <p>Descripció</p>
+                <p style="font-weight: bold;">Descripció</p>
                 <p>{{selectedSong().description}}</p>
             </div>
             @if (selectedSong().favorite) {
@@ -19,7 +19,7 @@
             }
         </div>
         <div class="audio-container">
-            <audio [src]="selectedSong().mp3Url" controls></audio>
+            <audio [src]="selectedSong().mp3Url" controls autoplay></audio>
         </div>
     </div>
     <div>

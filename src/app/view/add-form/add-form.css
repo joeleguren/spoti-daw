@@ -1,0 +1,46 @@
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: #e0e1dd10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.popup-form {
+    background: #1B263B;
+    color: #E0E1DD;
+    padding: 20px;
+    padding-top: 10px;
+    border-radius: 10px;
+    width: 30%;
+    min-width: 300px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.form-input {
+    border: none;
+    background-color: #0D1B2A;
+    color: #E0E1DD;
+}
+
+.form-input::placeholder {
+    color: #e0e1dd70;
+    font-weight: 100;
+}
+
+.btn {
+    background-color: #060d15;
+    color: #E0E1DD;
+}
+
+.btn:hover {
+    background-color: #0D1B2A;
+}
+
+.alert-danger {
+    background-color: #750e0e;
+    color: #ffbaba;
+    border: none;
+}

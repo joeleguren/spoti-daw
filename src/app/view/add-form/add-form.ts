@@ -1,18 +1,26 @@
-import { Component, output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, OutputEmitterRef, Signal, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { App } from '../../app';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-add-form',
-  imports: [FormsModule],
+  imports: [FormsModule, FontAwesomeModule],
   templateUrl: './add-form.html',
   styleUrl: './add-form.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddForm {
 
+  // Inici FontAwesome icons
+  public solidX = faXmark;
+  public solidTriangleExclamation = faTriangleExclamation;
+    // Fi FontAwesome icons
+
   // Dades per enviar al pare
   public sendSong: OutputEmitterRef<any> = output<any>(); // Enviar cançó al MusicList
-
   public viewMode: OutputEmitterRef<string> = output<string>(); // Enviar viewMode
 
   private _title: WritableSignal<string> = signal("");
@@ -35,6 +43,7 @@ export class AddForm {
   public get artist(): WritableSignal<string> {
     return this._artist;
   }
+  
   public set artist(value: string) {
     this._artist.set(value);
   }
@@ -102,9 +111,6 @@ export class AddForm {
     } else {
       this._errorMessage.set("Error, les dades no poden estar buides!")
     }
-
-    // Validar camps
-    // Fer un emit, enviant camps al App i aquest al musicList
   }
 
   public allSongDataIsNotEmpty(): boolean {

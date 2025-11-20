@@ -2,6 +2,7 @@
     <main>
         <app-music-list [getFavoriteFromPlayer]="favoriteSongInPlayer()" 
         [getSongInAddForm]="songInAddForm()"
+        [getViewMode]="viewMode()"
         (sendFavoriteToPlayer)="markSongAsFavorite($event)" 
         (sendSongToPlayer)="onSelectSongForPlayer($event)"
         (viewMode)="selectViewMode($event)">
