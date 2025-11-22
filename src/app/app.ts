@@ -54,9 +54,7 @@ export class App {
   }
 
   public get favoriteSongInPlayer(): WritableSignal<any> {
-        console.log(this._favoriteSongInPlayer());
-
-    
+        // console.log(this._favoriteSongInPlayer());
     return this._favoriteSongInPlayer;
   }
   

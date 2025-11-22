@@ -13,6 +13,8 @@
     </div>
     <div class="row">
         @for (song of filteredSongsArr(); track $index) {
+            <!-- Canvi 22/11/2025. Ara filtro amb aquest if, per evitar problemes amb favorits i cerca -->
+            @if (matchesSearch(song)) {
             <div class="song-container shadow-lg" [style]="retrieveStylesIfSongSelected(song)">
                 <div (click)="onClickSong(song)" class="col-md-11 song-subcontainer">
                     <img [src]="song.cover" [alt]="song.title" class="song-img">
@@ -29,6 +31,7 @@
                     }
                 </div>
             </div>
+            }
         }
     </div>
 </div>
