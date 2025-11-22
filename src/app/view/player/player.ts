@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, InputSignal, output, OutputEmitterRef, signal, Signal} from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input, InputSignal, output, OutputEmitterRef, signal, Signal} from '@angular/core';
 import { App } from '../../app';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHeart as fasHeart} from '@fortawesome/free-solid-svg-icons';
@@ -29,19 +29,24 @@ export class Player {
   public selectedSong: InputSignal<any> = input<any>(null); // Recorda només lectura proporcionat per App
 
 
+  constructor() {
+    effect(() => {
+      
+    });
+  }
+
   public onClickCloseButton() { // Si apreto botó tancar cançó
     this.viewMode.emit(App.SHOW_NONE);  // Tanca el component
   }
 
   public onClickFavoriteButton() { // Si apreta botó marcar o desmarcar favorit
     // Modifiquem directament la referència
-    this.selectedSong().favorite = !this.selectedSong().favorite;
-   // const updatedSong = this.selectedSong();
-
-    //let updatedSong = {...this.selectedSong()};
-    //updatedSong.favorite = !updatedSong.favorite;
+    // this.selectedSong().favorite = !this.selectedSong().favorite;
+   // const updatedSong = this.selectedSong();  
+    let updatedSong = {...this.selectedSong()}; // Copia la cançó
+    // updatedSong.favorite = !updatedSong.favorite;
     // Enviem la cançó actualitzada al pare
-    //this.sendSongMarkAsFavorite.emit(updatedSong); // Necessari fer emit, sinò OnPush del musicList no actualitza favorit correctament
+    this.sendSongMarkAsFavorite.emit(updatedSong); // Envia nova referencia, cosa que farà disparar
   }
 
 }

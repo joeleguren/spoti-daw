@@ -63,30 +63,59 @@ export class MusicList {
 
 
     effect(() => { // És llença aquesta funció quan canvia el getPlayerSongAsFavorite
-      const favoritePlayer: any = this.getFavoriteFromPlayer();
-      // console.log("Dono favorit!!");
-      if(favoritePlayer !== null && this.areSongsEqual(favoritePlayer, this._selectedSong())) {
-        // console.log("Soc el musicList, cançó --> " + favoritePlayer.title +" i com a favorit rebo -->" + favoritePlayer.favorite);
-        // Busco cançó a la llista filtered
-        let songInMusicList = this.searchAndRetrieveSong(this._filteredSongsArr(), favoritePlayer); 
+      // console.log(this._selectedSong());
+      console.log("this.getFavoriteFromPlayer()");
+      console.log(this.getFavoriteFromPlayer());
       
-        if (songInMusicList !== null) {
-         // console.log("A la filtered he trobat la cançó amb favorite. -->" + songInMusicList.favorite);
-          songInMusicList.favorite = favoritePlayer.favorite;
-          //this.sendSongToPlayer.emit(songInMusicList);
-        }
+      const favoritePlayer: any = this.getFavoriteFromPlayer();
 
-        // Aqui guardem al localStorage
-        let savedSongs = this.getSongs();
-        let song = this.searchAndRetrieveSong(savedSongs, favoritePlayer);
+      // Per a que no me toqui al seleccionar, que depengui solament de this.getFavoriteFromPlayer();
 
-        if (song !== null) {
-          song.favorite = favoritePlayer.favorite;
-          this.saveSongs(savedSongs);
-          this.sendSongToPlayer.emit(song);
+      if (favoritePlayer !== null) {
+        const songInMusicList = this.searchAndRetrieveSong(this._filteredSongsArr(), favoritePlayer);
+
+        // Obtindre cançó, si hi ha canvi, canvio la song actual nomes.
+        if (songInMusicList !== null) { 
+          console.log("PlAYER VOL ACTUALITSZAR FAVORIT PUTO JOAN VILA");
+          
+          this.markOrUnmarkSongAsFavorite(songInMusicList);
+        } else  {
+          let savedSongs = this.getSongs();
+          let song = this.searchAndRetrieveSong(savedSongs, favoritePlayer);
+
+          console.log("Cançóoo trobada LS FILO PUTA");
+          
+          console.log(song);
+          
+
+          if (song !== null) {
+            // song.favorite = !favoritePlayer.favorite;
+            this.saveSongs(savedSongs);
+            this.sendSongToPlayer.emit(song);
+          }
         }
-       
-      } 
+      }
+      // if (this.areSongsEqual(favoritePlayer, this._selectedSong())) {
+      //   // console.log("Soc el musicList, cançó --> " + favoritePlayer.title +" i com a favorit rebo -->" + favoritePlayer.favorite);
+      //   // Busco cançó a la llista filtered
+      //   let songInMusicList = this.searchAndRetrieveSong(this._filteredSongsArr(), favoritePlayer); 
+      
+      //   if (songInMusicList !== null) {
+      //    // console.log("A la filtered he trobat la cançó amb favorite. -->" + songInMusicList.favorite);
+      //     songInMusicList.favorite = !favoritePlayer.favorite;
+      //     //this.sendSongToPlayer.emit(songInMusicList);
+      //   }
+
+      //   // Aqui guardem al localStorage
+      //   let savedSongs = this.getSongs();
+      //   let song = this.searchAndRetrieveSong(savedSongs, favoritePlayer);
+
+      //   if (song !== null) {
+      //     song.favorite = !favoritePlayer.favorite;
+      //     this.saveSongs(savedSongs);
+      //     this.sendSongToPlayer.emit(song);
+      //   }
+      // }
 
     });
 
@@ -158,6 +187,8 @@ export class MusicList {
 
   // S'encarrega de marcar o desmarcar com a preferit guardant al localStorage també
   public markOrUnmarkSongAsFavorite(song: any) {
+    console.log("MARCO FAVORIT FUNCIO MUSICLIST");
+    
     song.favorite = !song.favorite; // Marca cançó a la llista filtered per referència
 
     if (this._selectedSong() !== null 

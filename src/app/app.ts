@@ -54,6 +54,9 @@ export class App {
   }
 
   public get favoriteSongInPlayer(): WritableSignal<any> {
+        console.log(this._favoriteSongInPlayer());
+
+    
     return this._favoriteSongInPlayer;
   }
   
@@ -63,6 +66,7 @@ export class App {
 
   public onSelectSongForPlayer(selectedSong : any) {
     if (selectedSong !== null) {
+      this._favoriteSongInPlayer.set(null);
       this._selectedSongInPlayer.set(selectedSong);
     }
    // console.log("Hola sóc el papa i tinc la cançó seleccionada ---> " + this._selectedSongInPlayer().title);
